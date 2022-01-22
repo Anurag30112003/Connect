@@ -123,7 +123,7 @@ def mystats():
     return render_template("data.html", data=data)
 
 
-@app.route("/chat")
+@app.route("/chat",methods=['GET', 'POST'])
 def sessions():
     if not 'username' in session:
         return redirect(url_for('signin'))
