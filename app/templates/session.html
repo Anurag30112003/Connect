@@ -1,10 +1,47 @@
 {% extends 'base.html' %}{% block content %}{% include 'dashnav.html' %}
+<style>
+ .message {
+   bottom: 0px;
+   position: absolute;
+    background-color: #dfdfdf;
+    border-color: #ebccd1;
+    color: #222222;
+    padding: 5px;
+    text-align: center;
+    border-radius: 4px solid #3f3f3f; ; 
+    font-size: 1.5rem;
+    width: 80%;
+    height: 3rem;
+    left: 0px;
+    border-radius: 20px;
+    margin-bottom: 5px;
+
+}
+.btn-submit{
+  position: absolute;
+  background-color: #3f3f3f;
+  color: #ffffff;
+  height: 3rem;
+  width: 20%;
+  bottom: 0px;
+  left: 80%;
+  border: none;
+  font-size: 1.5rem;
+  border-radius: 20px;
+  margin-bottom: 5px;
+}
+.message_holder{
+  font-size: 1.5rem;
+  float: left;
+  margin-left: 3rem;
+}
+</style>
 <h3 style='color: #ccc;font-size: 30px;'>No message yet..</h3>
   <div class="message_holder"></div>
-  <form action="" method="POST">
+  <form action="" method="POST" class="form-mess">
     <!-- <input type="text" class="username" placeholder="User Name"/> -->
-    <input type="text" class="message" placeholder="Messages"/>
-    <input type="submit"/>
+    <input type="text" class="message" placeholder="Messages" />
+    <button type="submit" class="btn-submit">Submit</button>
   </form>
 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

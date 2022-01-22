@@ -124,7 +124,6 @@ def mystats():
 
 
 @app.route("/chat")
-
 def sessions():
     if not 'username' in session:
         return redirect(url_for('signin'))
