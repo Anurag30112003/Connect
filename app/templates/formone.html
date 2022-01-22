@@ -3,10 +3,6 @@
   <h1>Your Personality</h1>
   <form class="form-signin pt-5" action="" method="post" novalidate>
     {{ form.hidden_tag() }}
-    <div class="form-group" ondblclick="playAudio('myers')">
-      <label for="username">Myers–Briggs:</label>
-      {{ form.myers(size=32, class_="form-control", placeholder="INTP" ) }}
-    </div>
     <div class="form-group" ondblclick="playAudio('int')">
       <label for="username">Interests:</label>
       {{ form.interests(size=32, class_="form-control", placeholder="Baking" ) }}

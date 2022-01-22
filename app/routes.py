@@ -12,6 +12,8 @@ from pymongo import MongoClient
 from matchalgo import match, stats
 from dotenv import load_dotenv
 load_dotenv()
+from flask_socketio import SocketIO
+socketio = SocketIO(app)
 
 myclient = MongoClient(getenv("MONGO_URI"))
 mydb = myclient["diversify"]
@@ -50,7 +52,7 @@ def signup():
         if mydb.users.find_one({'username': username}):
             flash('Username already taken')
             return redirect(url_for('signup'))
-        mydb.users.insert_one({"username": username, "email": email, "password": password, "name": "", "age": "", "country": "", "occupation": "", "myers": "", "interests":"", "sports": "", "songs": "","languages": "", "food": "","gender": "", "ethnicity": "", "class": "", "university": "", "complete": ""})
+        mydb.users.insert_one({"username": username, "email": email, "password": password, "name": "", "age": "", "country": "", "occupation": "",  "interests":"", "sports": "", "songs": "","languages": "", "food": "","gender": "", "ethnicity": "", "class": "", "university": "", "complete": ""})
         assignSession(username)
         return redirect(url_for('dashboard'))
     return render_template("signup.html", form=form)
@@ -89,13 +91,12 @@ def formzero():
 def formone():
     form=FormOne()
     if form.validate_on_submit():
-        myers = form.myers.data
         interests = form.interests.data
         sports = form.sports.data
         songs = form.songs.data
         languages = form.languages.data
         food = form.food.data
-        mydb.users.update_one({"username": session['username']},{"$set": {"myers": myers, "interests": interests, "sports": sports, "songs": songs, "languages": languages, "food": food}})
+        mydb.users.update_one({"username": session['username']},{"$set": {"interests": interests, "sports": sports, "songs": songs, "languages": languages, "food": food}})
         return redirect(url_for('formtwo'))
     return render_template("formone.html", session=session, form=form)
 
@@ -120,3 +121,27 @@ def mystats():
     scores = match(me, user_array)
     data = stats(me, scores)
     return render_template("data.html", data=data)
+
+
+@app.route("/chat")
+
+def sessions():
+    if not 'username' in session:
+        return redirect(url_for('signin'))
+    user = mydb.users.find_one({'username': session['username']})
+    if user['complete'] != 'true':
+        return redirect(url_for('startform'))
+    else:
+        users = mydb.users.find( { "username": { "$ne" : session['username'] }} )
+        user_array = [user for user in users]
+        me = mydb.users.find_one({'username': session['username']});
+        scores = match(me, user_array)
+    return render_template('session.html',session=session, scores=scores)
+
+def messageReceived(methods=['GET', 'POST']):
+    print('message was received!!!')
+
+@socketio.on('my event')
+def handle_my_custom_event(json, methods=['GET', 'POST']):
+    print('received my event: ' + str(json))
+    socketio.emit('my response', json, callback=messageReceived)

@@ -23,7 +23,7 @@ class FormZero(FlaskForm):
     submit = SubmitField('Next')
 
 class FormOne(FlaskForm):
-    myers = StringField('Myers')
+    # myers = StringField('Myers')
     interests = StringField('Interests')
     sports = StringField('Sports')
     songs = StringField('Songs')
