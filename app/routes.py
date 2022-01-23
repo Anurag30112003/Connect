@@ -138,6 +138,17 @@ def sessions():
     return render_template('session.html',session=session, scores=scores)
 
 def messageReceived(methods=['GET', 'POST']):
+    from twilio.rest import Client 
+ 
+    account_sid = 'AC81c745528c0842aac5e2f5f8727ade82' 
+    auth_token = 'Redacted' 
+    client = Client(account_sid, auth_token) 
+    user = mydb.users.find_one({'username': session['username']})
+ 
+    message = client.messages.create(messaging_service_sid='MGc116909a1016558d0670a56e0b08190b',body=f'You got a message from {user}',to='+918210196210')
+                         
+ 
+    print(message.sid)
     print('message was received!!!')
 
 @socketio.on('my event')
